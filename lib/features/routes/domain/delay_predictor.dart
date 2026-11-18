@@ -28,28 +28,37 @@ class DelayPrediction {
   }
 }
 
-/// Delay predictor, v0.1 heuristic.
+/// Delay predictor, v0.2.
 ///
 /// Predicts a route's delay as the weighted average of its recent observed
 /// delays, with newer observations counting double. This is a transparent
 /// heuristic, not a learned model: a machine-learning predictor using time
-/// of day, weekday, and weather is on the roadmap. With no history it
-/// predicts 0 (on time) at [DelayConfidence.none].
+/// of day, weekday, and weather is on the roadmap.
+///
+/// Since v0.2 the observations come from trips actually recorded on the
+/// device ([predictFromDelays]) — routes with no recorded trips still fall
+/// back to the sample delays bundled with the scaffold, and with no
+/// history at all it predicts 0 (on time) at [DelayConfidence.none].
 class DelayPredictor {
   const DelayPredictor();
 
   DelayPrediction predict(BusRoute route) {
-    final history = route.observedDelaysMinutes;
-    if (history.isEmpty) {
+    return predictFromDelays(route.observedDelaysMinutes);
+  }
+
+  /// Predicts from an explicit list of observed delays, newest last.
+  /// Used directly for trips recorded on this device.
+  DelayPrediction predictFromDelays(List<int> delays) {
+    if (delays.isEmpty) {
       return const DelayPrediction(
         predictedDelayMinutes: 0,
         confidence: DelayConfidence.none,
       );
     }
 
-    final recent = history.length > AppConstants.predictorHistorySize
-        ? history.sublist(history.length - AppConstants.predictorHistorySize)
-        : history;
+    final recent = delays.length > AppConstants.predictorHistorySize
+        ? delays.sublist(delays.length - AppConstants.predictorHistorySize)
+        : delays;
 
     var weightedSum = 0.0;
     var weightTotal = 0.0;
