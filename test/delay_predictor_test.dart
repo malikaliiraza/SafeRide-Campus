@@ -40,6 +40,12 @@ void main() {
     expect(prediction.predictedDelayMinutes, 8);
   });
 
+  test('predictFromDelays learns from recorded trips', () {
+    final prediction = predictor.predictFromDelays(const <int>[2, 3, 2]);
+    expect(prediction.predictedDelayMinutes, closeTo(2, 1));
+    expect(prediction.confidence, DelayConfidence.low);
+  });
+
   test('long delay history is flagged delayed', () {
     final prediction = predictor.predict(
       routeWith(const <int>[12, 15, 11, 14]),
