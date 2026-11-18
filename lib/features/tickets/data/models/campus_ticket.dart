@@ -24,19 +24,23 @@ class CampusTicket {
   final String dateLabel;
   final String seat;
 
-  /// Builds a sample ticket for a route. The code embeds the date and route
-  /// so a conductor can read it without any backend lookup.
+  /// Builds a ticket for a route. The code embeds the date and route so a
+  /// conductor can read it without any backend lookup. [serial] makes each
+  /// issued ticket unique — the home screen takes it from
+  /// [TicketRepository.nextSerial] and stores the ticket, so a scan can be
+  /// checked against tickets this phone actually issued.
   factory CampusTicket.sample({
     required String routeName,
     required String from,
     required String to,
     required String dateLabel,
     required String seat,
+    int serial = 42,
   }) {
     final compactDate = dateLabel.replaceAll(RegExp(r'[^0-9A-Za-z]'), '');
     final routeLetter = routeName.replaceAll(RegExp(r'[^A-Za-z]'), '');
     return CampusTicket(
-      code: 'SR-$compactDate-$routeLetter-042',
+      code: 'SR-$compactDate-$routeLetter-${serial.toString().padLeft(3, '0')}',
       routeName: routeName,
       from: from,
       to: to,
