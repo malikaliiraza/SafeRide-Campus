@@ -1,7 +1,7 @@
 name: saferide_campus
 description: "SafeRide Campus — safe university transport for Pakistan: delay predictor, parent safe-arrival alerts, offline QR ticket."
 publish_to: 'none'
-version: 0.1.0+1
+version: 0.2.0+2
 
 environment:
   sdk: ^3.0.0
@@ -13,6 +13,9 @@ dependencies:
   provider: ^6.1.2
   shared_preferences: ^2.2.2
   qr_flutter: ^4.1.0
+  geolocator: ^13.0.2
+  flutter_local_notifications: ^18.0.1
+  mobile_scanner: ^7.1.0
 
 dev_dependencies:
   flutter_test:
