@@ -1,7 +1,7 @@
 name: saferide_campus
 description: "SafeRide Campus — safe university transport for Pakistan: delay predictor, parent safe-arrival alerts, offline QR ticket."
 publish_to: 'none'
-version: 0.2.0+2
+version: 0.2.1+3
 
 environment:
   sdk: ^3.0.0
